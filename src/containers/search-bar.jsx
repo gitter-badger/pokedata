@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Dropdown } from 'stardust'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { fetchPokemon } from '../actions/index'
@@ -20,22 +21,35 @@ class SearchBar extends Component {
   }
 
   selectItem (event) {
+    console.log('selected thing')
     document.getElementById('detail-loader').className = ''
     this.props.fetchPokemon(parseInt(findKey(pokemonList, ['name', event.target.value]), 10) + 1)
   }
 
   generateList (pokemon) {
-    return (
-      <option key={pokemon.id} value={pokemon.name}>{toTitleCase(pokemon.name)}</option>
-    )
+    let options = []
+
+    pokemon.map(function(item) {
+      options.push({
+        "text": toTitleCase(item.name),
+        "value": item.id
+      })
+    })
+    console.log(options)
+    return options
   }
 
   render () {
+    const dropdownOptions = this.generateList(pokemonList)
     return (
-      <select className='ui fluid search selection dropdown' id='pokemon-search' onChange={this.selectItem}>
-        <option value=''>Search for a Pokémon!</option>
-        {pokemonList.map(this.generateList)}
-      </select>
+      <Dropdown
+        placeholder='Search for a Pokémon!'
+        multiple={false}
+        options={dropdownOptions}
+        fluid
+        selection
+        search={true}
+      />
     )
   }
 }
