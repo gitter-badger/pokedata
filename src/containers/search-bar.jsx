@@ -21,7 +21,6 @@ class SearchBar extends Component {
   }
 
   selectItem (event) {
-    console.log('selected thing')
     document.getElementById('detail-loader').className = ''
     this.props.fetchPokemon(parseInt(findKey(pokemonList, ['name', event.target.value]), 10) + 1)
   }
@@ -49,6 +48,7 @@ class SearchBar extends Component {
         fluid
         selection
         search={true}
+        onChange={this.selectItem}
       />
     )
   }
